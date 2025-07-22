@@ -13,13 +13,13 @@ CORS(app)  # 允许前端访问
 def index():
     return "Backend is working!"
 
-@app.route("/run-playwright")
-def run_playwright():
-    try:
-        result = asyncio.run(fetch_summary())
-        return jsonify(result)
-    except Exception as e:
-        return jsonify({"error": str(e)})
+# @app.route("/run-playwright")
+# def run_playwright():
+#     try:
+#         result = asyncio.run(fetch_summary())
+#         return jsonify(result)
+#     except Exception as e:
+#         return jsonify({"error": str(e)})
 
 @app.route("/get-cashier-data")
 def get_cashier_data():
