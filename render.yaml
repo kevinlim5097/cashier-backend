@@ -2,8 +2,5 @@ services:
   - type: web
     name: cashier-backend
     env: python
-    buildCommand: |
-      pip install -r requirements.txt
-      playwright install chromium
-    startCommand: python app.py
-    autoDeploy: true
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn app:app"
