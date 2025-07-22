@@ -1,0 +1,7 @@
+{
+  "name": "cashier-summary",
+  "version": "1.0.0",
+  "devDependencies": {
+    "playwright": "^1.44.0"
+  }
+}
