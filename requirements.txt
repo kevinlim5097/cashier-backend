@@ -1,5 +1,6 @@
-Flask
 requests
+flask
+flask-cors
 beautifulsoup4
 playwright
-flask_cors
+gunicorn
