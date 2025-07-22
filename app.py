@@ -11,7 +11,7 @@ CORS(app)  # 允许前端访问
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return "Backend is working!"
 
 @app.route("/run-playwright")
 def run_playwright():
