@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#007bff" />
+  <title>Cashier Summary</title>
+
+  <!-- PWA & Style -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/static/icon-192.png" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<script src="/static/script.js"></script>
+<body>
+  <div class="container">
+    <h2>Cashier Summary Viewer</h2>
+
+    <button onclick="getPlaywrightData()">Take Current Data</button>
+    <button id="checkBtn" class="secondary">Submit & Check</button>
+
+    <div id="loading" class="loading-block">
+      <div class="spinner"></div>
+      <p class="loading-text">Fetching data...</p>
+    </div>
+
+    <div id="result">
+      <p>Sales Amount: <span id="sales">-</span></p>
+      <p>Profit Amount: <span id="profit">-</span></p>
+      <p>TNG: <span id="tng">-</span></p>
+      <p>Cash: <span id="cash">-</span></p>
+      <p id="timestamp"></p>
+    </div>
+
+    <pre id="summary" class="summary-text" style="display:none;"></pre>
+  </div>
+
+  <script>
+    async function getPlaywrightData() {
+      const loadingDiv = document.getElementById("loading");
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/service-worker.js");
+      }
+
+      // 显示 Loading
+      loadingDiv.style.display = "block";
+      ["sales", "profit", "tng", "cash"].forEach(id => {
+        document.getElementById(id).textContent = "-";
+      });
+      document.getElementById("summary").textContent = "";
+
+      try {
+        const res = await fetch("/run-playwright");
+        const data = await res.json();
+
+        document.getElementById("sales").textContent = data["Sales Amount"] || "-";
+        document.getElementById("profit").textContent = data["Profit Amount"] || "-";
+        document.getElementById("tng").textContent = data["TNG"] || "-";
+        document.getElementById("cash").textContent = data["Cash"] || "-";
+
+        const now = new Date();
+        const timeString = now.toLocaleString();
+        document.getElementById("timestamp").textContent = "Last updated: " + timeString;
+
+        const summary =
+`Cashier Checklist
+
+Sales Amount: ${data["Sales Amount"] || "-"}
+Profit Amount: ${data["Profit Amount"] || "-"}
+TNG: ${data["TNG"] || "-"}
+Cash: ${data["Cash"] || "-"}
+
+Last updated: ${timeString}
+**CHECKED**`;
+
+        document.getElementById("summary").textContent = summary;
+
+      } catch (e) {
+        alert("❌ Failed to fetch data: " + e.message);
+      } finally {
+        loadingDiv.style.display = "none";
+      }
+    }
+
+    document.getElementById("checkBtn").addEventListener("click", () => {
+      const summaryText = document.getElementById("summary").textContent.trim();
+      if (!summaryText || summaryText.includes("-")) {
+        alert("Please click 'Take Current Data' first.");
+        return;
+      }
+      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(summaryText)}`;
+      window.open(whatsappLink, "_blank");
+    });
+  </script>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>
