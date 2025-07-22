@@ -2,5 +2,5 @@ services:
   - type: web
     name: cashier-backend
     env: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn app:app"
+    buildCommand: pip install -r requirements.txt && playwright install
+    startCommand: python app.py
